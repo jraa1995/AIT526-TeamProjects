@@ -8,15 +8,22 @@ Created on Wed May 22 14:39:02 2024
 from nltk.tokenize import word_tokenize
 import re
 
+# Constants
+NAME_PROMPT = "Hi, I'm Eliza, a psychotherapist. What is your name?"
+REPEAT_NAME_PROMPT = "Can you repeat your name?"
+INITIAL_PROMPT = "{name}, what is on your mind today?"
+DEFAULT_RESPONSE = "Tell me more."
+APOLOGY_RESPONSE = "There is no need to apologize."
+UNCLEAR_RESPONSE = "I didn't quite understand, can you say that another way?"
 
 def main():
     """
     main function to start the eliza program
     greets the user, gets their name, and initiates a dialogue loop
     """
-    print("Hi, I'm Eliza, a psychotherapist. What is your name?")
+    print(NAME_PROMPT)
     name = get_user_name()
-    print(f"{name}, what is on your mind today?")
+    print(INITIAL_PROMPT.format(name=name))
     input_text = input('You: ')
 
     while input_text.strip() != '':
@@ -42,7 +49,7 @@ def get_user_name():
         elif tokens[:3] == ['my', 'name', 'is']:
             return tokens[3]
         else:
-            print("Can you repeat your name?")
+            print(REPEAT_NAME_PROMPT)
 
 
 def generate_response(input_text, name):
@@ -158,10 +165,10 @@ def generate_response(input_text, name):
         return "Why do you ask about that place?"
     # respond to gibberish or non-alphabetic input
     elif not any(word.isalpha() for word in word_tokenize(input_text)):
-        return "I didn't quite understand, can you say that another way?"
+        return UNCLEAR_RESPONSE
     # default response for unrecognized patterns
     else:
-        return "Tell me more."
+        return DEFAULT_RESPONSE
 
 
 if __name__ == "__main__":

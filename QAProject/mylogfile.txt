@@ -1,0 +1,335 @@
+INFO:root:Question: 
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: Who is george washington?
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: When was George Washington Born?
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: import wikipedia
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: import re
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: import sys
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: import logging
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: import spacy
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: 
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: # initialize spaCy
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: nlp = spacy.load('en_core_web_sm')
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: 
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: # define answer patterns for different types of questions
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: patterns = {
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     'Who': [
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         "{} is", "{} was", "{}'s full name is", "{}'s full name was"
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     ],
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     'What': [
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         "{} is", "{} was", "{} refers to", "{} can be defined as"
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     ],
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     'When': [
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         "{} was born on", "{} was founded on", "{} was established on", "{} happened on"
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     ],
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     'Where': [
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         "{} is located in", "{} is found in", "{} is situated in", "{} is in"
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     ]
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: }
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: 
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: def find_answer(question_type, subject):
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     # generate search patterns
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     search_patterns = [pattern.format(subject) for pattern in patterns[question_type]]
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     logging.info(f"Search patterns: {search_patterns}")
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     # search Wikipedia
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     try:
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         summary = wikipedia.summary(subject)
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         logging.info(f"Wikipedia summary: {summary}")
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     except wikipedia.DisambiguationError as e:
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         summary = wikipedia.summary(e.options[0])
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         logging.info(f"Wikipedia summary after disambiguation: {summary}")
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     except wikipedia.PageError:
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         logging.info("Wikipedia page error")
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         return None
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     # check each sentence in the summary for matches
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     sentences = summary.split('. ')
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     for sentence in sentences:
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         for pattern in search_patterns:
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:             if sentence.startswith(pattern):
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:                 return sentence + "."
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     return None
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: 
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: def identify_question_type_and_subject(question):
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     doc = nlp(question)
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     question_type = None
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     subject = None
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: 
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     # identify the question type
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     for token in doc:
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         if token.pos_ == "ADV":
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:             if token.text.lower() in ["who", "what", "when", "where"]:
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:                 question_type = token.text.capitalize()
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:                 break
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     # extract the subject
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     if question_type:
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         for chunk in doc.noun_chunks:
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:             if chunk.root.dep_ in ["nsubj", "attr"]:
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:                 subject = chunk.text
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:                 break
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     logging.info(f"Identified question type: {question_type}, subject: {subject}")
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     return question_type, subject
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: 
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: def main():
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     if len(sys.argv) != 2:
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         print("Usage: python main.py <logfile>")
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         return
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: 
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     logfile = sys.argv[1]
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     logging.basicConfig(filename=logfile, level=logging.INFO)
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: 
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     print("*** This is a QA system by Group 5. It will try to answer questions that start with Who, What, When or Where. Enter 'exit' to leave the program.")
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     while True:
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         question = input("=?> ")
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         if question.lower() == "exit":
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:             print("Thank you! Goodbye.")
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:             break
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         logging.info(f"Question: {question}")
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         # identify question type and subject
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         question_type, subject = identify_question_type_and_subject(question)
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         if not question_type or not subject:
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:             print("I am sorry, I don't know the answer.")
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:             logging.info("Answer: I am sorry, I don't know the answer.")
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:             continue
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         # find the answer
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         answer = find_answer(question_type, subject)
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         if answer:
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:             print(f"=> {answer}")
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:             logging.info(f"Answer: {answer}")
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         else:
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:             print("I am sorry, I don't know the answer.")
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:             logging.info("Answer: I am sorry, I don't know the answer.")
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:         
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: if __name__ == "__main__":
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question:     main()
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: python qa-system.py mylogfile.txt
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: python qa-system.py mylogfile.txt
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: 
+INFO:root:Identified question type: None, subject: None
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: When was george washington Born?
+INFO:root:Identified question type: None, subject: None
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: python qa-system.py mylogfile.txt
+INFO:root:Identified question type: None, subject: None
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: 
+INFO:root:Identified question type: None, subject: None
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: 
+INFO:root:Identified question type: None, subject: None
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: When was george washington born?
+INFO:root:Identified question type: None, subject: None
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: Where was George Washington born?
+INFO:root:Identified question type: None, subject: None
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: When was George Washington born?
+INFO:root:Identified question type: None, subject: None
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: python qa-system.py mylogfile.txt
+INFO:root:Identified question type: None, subject: None
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: When was George Washington born?
+INFO:root:Identified question type: None, subject: None
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: When was George Washington born?
+INFO:root:Identified question type: When, subject: George Washington
+INFO:root:Search patterns: ['George Washington was born on', 'George Washington was founded on', 'George Washington was established on', 'George Washington happened on']
+INFO:root:Wikipedia summary: George Washington (February 22, 1732 – December 14, 1799) was an American Founding Father, military officer, and politician who served as the first president of the United States from 1789 to 1797. Appointed by the Second Continental Congress as commander of the Continental Army in 1775, Washington led Patriot forces to victory in the American Revolutionary War and then served as president of the Constitutional Convention in 1787, which drafted the current Constitution of the United States. Washington has thus become commonly known as the "Father of his Country".
+Washington's first public office, from 1749 to 1750, was as surveyor of Culpeper County in the Colony of Virginia. He subsequently received military training and was assigned command of the Virginia Regiment during the French and Indian War.
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: When was George Washington born?
+INFO:root:Identified question type: When, subject: George Washington
+INFO:root:Search patterns: ['George Washington was born on', 'George Washington was founded on', 'George Washington was established on', 'George Washington happened on']
+INFO:root:Wikipedia summary: George Washington (February 22, 1732 – December 14, 1799) was an American Founding Father, military officer, and politician who served as the first president of the United States from 1789 to 1797. Appointed by the Second Continental Congress as commander of the Continental Army in 1775, Washington led Patriot forces to victory in the American Revolutionary War and then served as president of the Constitutional Convention in 1787, which drafted the current Constitution of the United States. Washington has thus become commonly known as the "Father of his Country".
+Washington's first public office, from 1749 to 1750, was as surveyor of Culpeper County in the Colony of Virginia. He subsequently received military training and was assigned command of the Virginia Regiment during the French and Indian War.
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: Where is Duluth, Minnesota?
+INFO:root:Identified question type: Where, subject: Duluth
+INFO:root:Search patterns: ['Duluth is located in', 'Duluth is found in', 'Duluth is situated in', 'Duluth is in']
+INFO:root:Wikipedia summary: Duluth (  d\u0259-LOOTH) is a port city in the U.S. state of Minnesota and the county seat of St. Louis County. Located on Lake Superior in Minnesota's Arrowhead Region, the city is a hub for cargo shipping. Commodities shipped from the Port of Duluth include coal, iron ore, grain, limestone, cement, salt, wood pulp, steel coil, and wind turbine components. Duluth is south of the Iron Range and the Boundary Waters Canoe Area Wilderness.
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: python qa-system.py mylogfile.txt
+INFO:root:Identified question type: None, subject: None
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: When was George Washington born?
+INFO:root:Identified question type: When, subject: Washington
+INFO:root:Search patterns: ['Washington was born on', 'Washington was founded on', 'Washington was established on', 'Washington happened on']
+INFO:root:Wikipedia summary after disambiguation: George Washington (February 22, 1732 – December 14, 1799) was an American Founding Father, military officer, and politician who served as the first president of the United States from 1789 to 1797. Appointed by the Second Continental Congress as commander of the Continental Army in 1775, Washington led Patriot forces to victory in the American Revolutionary War and then served as president of the Constitutional Convention in 1787, which drafted the current Constitution of the United States. Washington has thus become commonly known as the "Father of his Country".
+Washington's first public office, from 1749 to 1750, was as surveyor of Culpeper County in the Colony of Virginia. He subsequently received military training and was assigned command of the Virginia Regiment during the French and Indian War.
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: When was George Washington born?
+INFO:root:Identified question type: When, subject: Washington
+INFO:root:Search patterns: ['Washington was born on', 'Washington was founded on', 'Washington was established on', 'Washington happened on']
+INFO:root:Disambiguation error options: ['George Washington', 'Washington (state)', 'Washington, D.C.', 'federal government of the United States', 'Washington metropolitan area', 'Washington, Tyne and Wear', 'Washington Old Hall', 'Washington, West Sussex', 'Cape Washington, Greenland', 'Washington Land', 'New Washington, Aklan', 'Catarman, Northern Samar', 'Escalante, Negros Occidental', 'San Jacinto, Masbate', 'Surigao City', 'Washington, Wisconsin (disambiguation)', 'Fort Washington (disambiguation)', 'Lake Washington (disambiguation)', 'Mount Washington (disambiguation)', 'Port Washington (disambiguation)', 'Washington Avenue (disambiguation)', 'Washington Boulevard (disambiguation)', 'Washington Bridge (disambiguation)', 'Washington County (disambiguation)', 'Washington district (disambiguation)', 'Washington Island (disambiguation)', 'Washington Park (disambiguation)', 'Washington Square (disambiguation)', 'Washington Street (disambiguation)', 'Washington Township (disambiguation)', 'Washington Valley (disambiguation)', 'Washington, Alabama', 'Washington, Arkansas', 'Washington, California', 'Washington, Yolo County, California', 'Washington, Connecticut', 'Washington, Georgia', 'Washington, Illinois', 'Washington, Indiana', 'Washington, Iowa', 'Washington, Kansas', 'Washington, Kentucky', 'Washington, Louisiana', 'Washington, Maine', 'Washington, Massachusetts', 'Washington, Michigan', 'Washington, Mississippi', 'Washington, Missouri', 'Washington, Nebraska', 'Washington, New Hampshire', 'Washington, New Jersey', 'Washington, New York', 'Washington, North Carolina', 'Washington, Oklahoma', 'Washington, Pennsylvania', 'Washington, Rhode Island', 'Washington, Utah', 'Washington, Vermont', 'Washington, Virginia', 'Washington, West Virginia', 'Washington Court House, Ohio', 'Washington-on-the-Brazos, Texas', 'Washington Escarpment', 'Washington, Ontario', 'George Washington, Cuba', 'Washington Island (French Polynesia)', 'Washington Island (Kiribati)', 'Mahaica-Berbice', 'University of Washington', 'George Washington University', 'Harold Washington College', 'University of Mary Washington', 'Washington & Jefferson College', 'Washington College (California)', 'Washington College', 'Washington College, Connecticut', 'Washington College of Law', 'Washington Female Seminary', 'Washington Medical College', 'Washington University in St. Louis', 'Washington International University', 'Washington University of Barbados', 'Lake Washington High School', 'Washington Academy (disambiguation)', 'Washington College Academy', 'Booker T. Washington High School (disambiguation)', 'George Washington High School (disambiguation)', 'Washington County High School (disambiguation)', 'Washington High School (disambiguation)', 'Washington International School', 'Washington School (disambiguation)', 'Washington (name)', 'Washington (musician)', 'Washington (footballer, born 1953)', 'Washington (footballer, born 1 April 1975)', 'Washington (footballer, born 10 April 1975)', 'Washington (footballer, born August 1978)', 'Washington (footballer, born November 1978)', 'Washington (footballer, born 1985)', 'Washington (footballer, born May 1986)', 'Washington (footballer, born November 1986)', 'Washington (footballer, born 1989)', 'SS Washington', 'SS Washington (1941)', 'USS Washington', 'Washington (steamboat 1851)', 'Washington Capitals', 'Washington Nationals', 'Washington Mystics', 'Washington Commanders', 'Washington Wizards', 'D.C. United', 'Eastern Washington Eagles', 'Washington Huskies', 'Washington State Cougars', 'Central Washington Wildcats', 'Western Washington Vikings', 'Washington F.C.', 'Washington University Bears', 'Washington station (disambiguation)', 'Washington (tree)', 'Boeing Washington', 'Washingtonian (disambiguation)', 'All pages with titles beginning with Washington', 'All pages with titles containing Washington']
+INFO:root:Wikipedia summary after disambiguation: George Washington (February 22, 1732 – December 14, 1799) was an American Founding Father, military officer, and politician who served as the first president of the United States from 1789 to 1797. Appointed by the Second Continental Congress as commander of the Continental Army in 1775, Washington led Patriot forces to victory in the American Revolutionary War and then served as president of the Constitutional Convention in 1787, which drafted the current Constitution of the United States. Washington has thus become commonly known as the "Father of his Country".
+Washington's first public office, from 1749 to 1750, was as surveyor of Culpeper County in the Colony of Virginia. He subsequently received military training and was assigned command of the Virginia Regiment during the French and Indian War.
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: When was George Washington born?
+INFO:root:Identified question type: When, subject: Washington
+INFO:root:Search patterns: ['Washington was born on', 'Washington was founded on', 'Washington was established on', 'Washington happened on']
+INFO:root:Disambiguation error options: ['George Washington', 'Washington (state)', 'Washington, D.C.', 'federal government of the United States', 'Washington metropolitan area', 'Washington, Tyne and Wear', 'Washington Old Hall', 'Washington, West Sussex', 'Cape Washington, Greenland', 'Washington Land', 'New Washington, Aklan', 'Catarman, Northern Samar', 'Escalante, Negros Occidental', 'San Jacinto, Masbate', 'Surigao City', 'Washington, Wisconsin (disambiguation)', 'Fort Washington (disambiguation)', 'Lake Washington (disambiguation)', 'Mount Washington (disambiguation)', 'Port Washington (disambiguation)', 'Washington Avenue (disambiguation)', 'Washington Boulevard (disambiguation)', 'Washington Bridge (disambiguation)', 'Washington County (disambiguation)', 'Washington district (disambiguation)', 'Washington Island (disambiguation)', 'Washington Park (disambiguation)', 'Washington Square (disambiguation)', 'Washington Street (disambiguation)', 'Washington Township (disambiguation)', 'Washington Valley (disambiguation)', 'Washington, Alabama', 'Washington, Arkansas', 'Washington, California', 'Washington, Yolo County, California', 'Washington, Connecticut', 'Washington, Georgia', 'Washington, Illinois', 'Washington, Indiana', 'Washington, Iowa', 'Washington, Kansas', 'Washington, Kentucky', 'Washington, Louisiana', 'Washington, Maine', 'Washington, Massachusetts', 'Washington, Michigan', 'Washington, Mississippi', 'Washington, Missouri', 'Washington, Nebraska', 'Washington, New Hampshire', 'Washington, New Jersey', 'Washington, New York', 'Washington, North Carolina', 'Washington, Oklahoma', 'Washington, Pennsylvania', 'Washington, Rhode Island', 'Washington, Utah', 'Washington, Vermont', 'Washington, Virginia', 'Washington, West Virginia', 'Washington Court House, Ohio', 'Washington-on-the-Brazos, Texas', 'Washington Escarpment', 'Washington, Ontario', 'George Washington, Cuba', 'Washington Island (French Polynesia)', 'Washington Island (Kiribati)', 'Mahaica-Berbice', 'University of Washington', 'George Washington University', 'Harold Washington College', 'University of Mary Washington', 'Washington & Jefferson College', 'Washington College (California)', 'Washington College', 'Washington College, Connecticut', 'Washington College of Law', 'Washington Female Seminary', 'Washington Medical College', 'Washington University in St. Louis', 'Washington International University', 'Washington University of Barbados', 'Lake Washington High School', 'Washington Academy (disambiguation)', 'Washington College Academy', 'Booker T. Washington High School (disambiguation)', 'George Washington High School (disambiguation)', 'Washington County High School (disambiguation)', 'Washington High School (disambiguation)', 'Washington International School', 'Washington School (disambiguation)', 'Washington (name)', 'Washington (musician)', 'Washington (footballer, born 1953)', 'Washington (footballer, born 1 April 1975)', 'Washington (footballer, born 10 April 1975)', 'Washington (footballer, born August 1978)', 'Washington (footballer, born November 1978)', 'Washington (footballer, born 1985)', 'Washington (footballer, born May 1986)', 'Washington (footballer, born November 1986)', 'Washington (footballer, born 1989)', 'SS Washington', 'SS Washington (1941)', 'USS Washington', 'Washington (steamboat 1851)', 'Washington Capitals', 'Washington Nationals', 'Washington Mystics', 'Washington Commanders', 'Washington Wizards', 'D.C. United', 'Eastern Washington Eagles', 'Washington Huskies', 'Washington State Cougars', 'Central Washington Wildcats', 'Western Washington Vikings', 'Washington F.C.', 'Washington University Bears', 'Washington station (disambiguation)', 'Washington (tree)', 'Boeing Washington', 'Washingtonian (disambiguation)', 'All pages with titles beginning with Washington', 'All pages with titles containing Washington']
+INFO:root:Wikipedia summary after disambiguation: George Washington (February 22, 1732 – December 14, 1799) was an American Founding Father, military officer, and politician who served as the first president of the United States from 1789 to 1797. Appointed by the Second Continental Congress as commander of the Continental Army in 1775, Washington led Patriot forces to victory in the American Revolutionary War and then served as president of the Constitutional Convention in 1787, which drafted the current Constitution of the United States. Washington has thus become commonly known as the "Father of his Country".
+Washington's first public office, from 1749 to 1750, was as surveyor of Culpeper County in the Colony of Virginia. He subsequently received military training and was assigned command of the Virginia Regiment during the French and Indian War.
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: When was George Washington born?
+INFO:root:Identified question type: When, subject: Washington
+INFO:root:Search patterns: ['Washington was born on', 'Washington was founded on', 'Washington was established on', 'Washington happened on']
+INFO:root:Disambiguation error options: ['George Washington', 'Washington (state)', 'Washington, D.C.', 'federal government of the United States', 'Washington metropolitan area', 'Washington, Tyne and Wear', 'Washington Old Hall', 'Washington, West Sussex', 'Cape Washington, Greenland', 'Washington Land', 'New Washington, Aklan', 'Catarman, Northern Samar', 'Escalante, Negros Occidental', 'San Jacinto, Masbate', 'Surigao City', 'Washington, Wisconsin (disambiguation)', 'Fort Washington (disambiguation)', 'Lake Washington (disambiguation)', 'Mount Washington (disambiguation)', 'Port Washington (disambiguation)', 'Washington Avenue (disambiguation)', 'Washington Boulevard (disambiguation)', 'Washington Bridge (disambiguation)', 'Washington County (disambiguation)', 'Washington district (disambiguation)', 'Washington Island (disambiguation)', 'Washington Park (disambiguation)', 'Washington Square (disambiguation)', 'Washington Street (disambiguation)', 'Washington Township (disambiguation)', 'Washington Valley (disambiguation)', 'Washington, Alabama', 'Washington, Arkansas', 'Washington, California', 'Washington, Yolo County, California', 'Washington, Connecticut', 'Washington, Georgia', 'Washington, Illinois', 'Washington, Indiana', 'Washington, Iowa', 'Washington, Kansas', 'Washington, Kentucky', 'Washington, Louisiana', 'Washington, Maine', 'Washington, Massachusetts', 'Washington, Michigan', 'Washington, Mississippi', 'Washington, Missouri', 'Washington, Nebraska', 'Washington, New Hampshire', 'Washington, New Jersey', 'Washington, New York', 'Washington, North Carolina', 'Washington, Oklahoma', 'Washington, Pennsylvania', 'Washington, Rhode Island', 'Washington, Utah', 'Washington, Vermont', 'Washington, Virginia', 'Washington, West Virginia', 'Washington Court House, Ohio', 'Washington-on-the-Brazos, Texas', 'Washington Escarpment', 'Washington, Ontario', 'George Washington, Cuba', 'Washington Island (French Polynesia)', 'Washington Island (Kiribati)', 'Mahaica-Berbice', 'University of Washington', 'George Washington University', 'Harold Washington College', 'University of Mary Washington', 'Washington & Jefferson College', 'Washington College (California)', 'Washington College', 'Washington College, Connecticut', 'Washington College of Law', 'Washington Female Seminary', 'Washington Medical College', 'Washington University in St. Louis', 'Washington International University', 'Washington University of Barbados', 'Lake Washington High School', 'Washington Academy (disambiguation)', 'Washington College Academy', 'Booker T. Washington High School (disambiguation)', 'George Washington High School (disambiguation)', 'Washington County High School (disambiguation)', 'Washington High School (disambiguation)', 'Washington International School', 'Washington School (disambiguation)', 'Washington (name)', 'Washington (musician)', 'Washington (footballer, born 1953)', 'Washington (footballer, born 1 April 1975)', 'Washington (footballer, born 10 April 1975)', 'Washington (footballer, born August 1978)', 'Washington (footballer, born November 1978)', 'Washington (footballer, born 1985)', 'Washington (footballer, born May 1986)', 'Washington (footballer, born November 1986)', 'Washington (footballer, born 1989)', 'SS Washington', 'SS Washington (1941)', 'USS Washington', 'Washington (steamboat 1851)', 'Washington Capitals', 'Washington Nationals', 'Washington Mystics', 'Washington Commanders', 'Washington Wizards', 'D.C. United', 'Eastern Washington Eagles', 'Washington Huskies', 'Washington State Cougars', 'Central Washington Wildcats', 'Western Washington Vikings', 'Washington F.C.', 'Washington University Bears', 'Washington station (disambiguation)', 'Washington (tree)', 'Boeing Washington', 'Washingtonian (disambiguation)', 'All pages with titles beginning with Washington', 'All pages with titles containing Washington']
+INFO:root:Wikipedia summary after disambiguation: George Washington (February 22, 1732 – December 14, 1799) was an American Founding Father, military officer, and politician who served as the first president of the United States from 1789 to 1797. Appointed by the Second Continental Congress as commander of the Continental Army in 1775, Washington led Patriot forces to victory in the American Revolutionary War and then served as president of the Constitutional Convention in 1787, which drafted the current Constitution of the United States. Washington has thus become commonly known as the "Father of his Country".
+Washington's first public office, from 1749 to 1750, was as surveyor of Culpeper County in the Colony of Virginia. He subsequently received military training and was assigned command of the Virginia Regiment during the French and Indian War.
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: When was George Washington born?
+INFO:root:Identified question type: When, subject: George Washington
+INFO:root:Search patterns: ['George Washington was born on', 'George Washington was founded on', 'George Washington was established on', 'George Washington happened on']
+INFO:root:Wikipedia summary: George Washington (February 22, 1732 – December 14, 1799) was an American Founding Father, military officer, and politician who served as the first president of the United States from 1789 to 1797. Appointed by the Second Continental Congress as commander of the Continental Army in 1775, Washington led Patriot forces to victory in the American Revolutionary War and then served as president of the Constitutional Convention in 1787, which drafted the current Constitution of the United States. Washington has thus become commonly known as the "Father of his Country".
+Washington's first public office, from 1749 to 1750, was as surveyor of Culpeper County in the Colony of Virginia. He subsequently received military training and was assigned command of the Virginia Regiment during the French and Indian War.
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: When was George Washington born?
+INFO:root:Identified question type: When, subject: George Washington
+INFO:root:Search patterns: ['George Washington was born on', 'George Washington was founded on', 'George Washington was established on', 'George Washington happened on']
+INFO:root:Wikipedia summary: George Washington (February 22, 1732 – December 14, 1799) was an American Founding Father, military officer, and politician who served as the first president of the United States from 1789 to 1797. Appointed by the Second Continental Congress as commander of the Continental Army in 1775, Washington led Patriot forces to victory in the American Revolutionary War and then served as president of the Constitutional Convention in 1787, which drafted the current Constitution of the United States. Washington has thus become commonly known as the "Father of his Country".
+Washington's first public office, from 1749 to 1750, was as surveyor of Culpeper County in the Colony of Virginia. He subsequently received military training and was assigned command of the Virginia Regiment during the French and Indian War.
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: When was George Washington born?
+INFO:root:Identified question type: When, subject: George Washington
+INFO:root:Search patterns: ['George Washington was born on', 'George Washington was founded on', 'George Washington was established on', 'George Washington happened on']
+INFO:root:Wikipedia summary: George Washington (February 22, 1732 – December 14, 1799) was an American Founding Father, military officer, and politician who served as the first president of the United States from 1789 to 1797. Appointed by the Second Continental Congress as commander of the Continental Army in 1775, Washington led Patriot forces to victory in the American Revolutionary War and then served as president of the Constitutional Convention in 1787, which drafted the current Constitution of the United States. Washington has thus become commonly known as the "Father of his Country".
+Washington's first public office, from 1749 to 1750, was as surveyor of Culpeper County in the Colony of Virginia. He subsequently received military training and was assigned command of the Virginia Regiment during the French and Indian War.
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: When was George Washington born?
+INFO:root:Identified question type: When, subject: George Washington
+INFO:root:Search patterns: [re.compile('George\\ Washington was born on', re.IGNORECASE), re.compile('George\\ Washington was born', re.IGNORECASE), re.compile('George\\ Washington was founded on', re.IGNORECASE), re.compile('George\\ Washington was established on', re.IGNORECASE), re.compile('George\\ Washington happened on', re.IGNORECASE)]
+INFO:root:Wikipedia summary: George Washington (February 22, 1732 – December 14, 1799) was an American Founding Father, military officer, and politician who served as the first president of the United States from 1789 to 1797. Appointed by the Second Continental Congress as commander of the Continental Army in 1775, Washington led Patriot forces to victory in the American Revolutionary War and then served as president of the Constitutional Convention in 1787, which drafted the current Constitution of the United States. Washington has thus become commonly known as the "Father of his Country".
+Washington's first public office, from 1749 to 1750, was as surveyor of Culpeper County in the Colony of Virginia. He subsequently received military training and was assigned command of the Virginia Regiment during the French and Indian War.
+INFO:root:Answer: I am sorry, I don't know the answer.
+INFO:root:Question: When was George Washington born?
+INFO:root:Identified question type: When, subject: George Washington
+INFO:root:Search patterns: [re.compile('George\\ Washington was born on', re.IGNORECASE), re.compile('George\\ Washington was born', re.IGNORECASE), re.compile('George\\ Washington was born in', re.IGNORECASE), re.compile('George\\ Washington was founded on', re.IGNORECASE), re.compile('George\\ Washington was established on', re.IGNORECASE), re.compile('George\\ Washington happened on', re.IGNORECASE), re.compile('born on George\\ Washington on', re.IGNORECASE), re.compile('born on George\\ Washington in', re.IGNORECASE), re.compile('born on George\\ Washington', re.IGNORECASE)]
+INFO:root:Wikipedia summary: George Washington (February 22, 1732 – December 14, 1799) was an American Founding Father, military officer, and politician who served as the first president of the United States from 1789 to 1797. Appointed by the Second Continental Congress as commander of the Continental Army in 1775, Washington led Patriot forces to victory in the American Revolutionary War and then served as president of the Constitutional Convention in 1787, which drafted the current Constitution of the United States. Washington has thus become commonly known as the "Father of his Country".
+Washington's first public office, from 1749 to 1750, was as surveyor of Culpeper County in the Colony of Virginia. He subsequently received military training and was assigned command of the Virginia Regiment during the French and Indian War.
+INFO:root:Answer: George Washington was born on February 22, 1732.

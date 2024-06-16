@@ -160,7 +160,7 @@ def main():
         # find the answer
         answer = find_answer(question_type, subject)
         if answer:
-            log_and_print(f"=> {answer}", 'info')
+            log_and_print(f"Answer => {answer}", 'info')
             #print(f"=> {answer}")
             #logging.info(f"answer: {answer}")
         else:

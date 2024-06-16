@@ -25,6 +25,14 @@ patterns = {
     ]
 }
 
+def setup_logging(logfile):
+    logging.basicConfig(
+        filename=logfile,
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S'
+    )
+
 
 def find_answer(question_type, subject):
     # generate search patterns

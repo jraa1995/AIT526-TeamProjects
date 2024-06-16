@@ -333,3 +333,25 @@ INFO:root:Search patterns: [re.compile('George\\ Washington was born on', re.IGN
 INFO:root:Wikipedia summary: George Washington (February 22, 1732 � December 14, 1799) was an American Founding Father, military officer, and politician who served as the first president of the United States from 1789 to 1797. Appointed by the Second Continental Congress as commander of the Continental Army in 1775, Washington led Patriot forces to victory in the American Revolutionary War and then served as president of the Constitutional Convention in 1787, which drafted the current Constitution of the United States. Washington has thus become commonly known as the "Father of his Country".
 Washington's first public office, from 1749 to 1750, was as surveyor of Culpeper County in the Colony of Virginia. He subsequently received military training and was assigned command of the Virginia Regiment during the French and Indian War.
 INFO:root:Answer: George Washington was born on February 22, 1732.
+INFO:root:question: Who is george washington?
+INFO:root:identified question type: Who, subject: george washington
+INFO:root:search patterns: [re.compile('george\\ washington is', re.IGNORECASE), re.compile('george\\ washington was', re.IGNORECASE), re.compile("george\\ washington's full name is", re.IGNORECASE), re.compile("george\\ washington's full name was", re.IGNORECASE)]
+INFO:root:wikipedia summary: George Washington (February 22, 1732 – December 14, 1799) was an American Founding Father, military officer, and politician who served as the first president of the United States from 1789 to 1797. Appointed by the Second Continental Congress as commander of the Continental Army in 1775, Washington led Patriot forces to victory in the American Revolutionary War and then served as president of the Constitutional Convention in 1787, which drafted the current Constitution of the United States. Washington has thus become commonly known as the "Father of his Country".
+Washington's first public office, from 1749 to 1750, was as surveyor of Culpeper County in the Colony of Virginia. He subsequently received military training and was assigned command of the Virginia Regiment during the French and Indian War.
+INFO:root:answer: george washington was born on February 22, 1732.
+INFO:root:question: what is a rock?
+INFO:root:identified question type: What, subject: a rock
+INFO:root:search patterns: [re.compile('a\\ rock is', re.IGNORECASE), re.compile('a\\ rock was', re.IGNORECASE), re.compile('a\\ rock refers to', re.IGNORECASE), re.compile('a\\ rock can be defined as', re.IGNORECASE)]
+INFO:root:wikipedia page error: Page id "a rock" does not match any pages. Try another id!
+INFO:root:answer: I am sorry, I don't know the answer.
+INFO:root:question: what is mount vesuvius?
+INFO:root:identified question type: What, subject: mount vesuvius
+INFO:root:search patterns: [re.compile('mount\\ vesuvius is', re.IGNORECASE), re.compile('mount\\ vesuvius was', re.IGNORECASE), re.compile('mount\\ vesuvius refers to', re.IGNORECASE), re.compile('mount\\ vesuvius can be defined as', re.IGNORECASE)]
+INFO:root:wikipedia page error: Page id "mount vesuvius" does not match any pages. Try another id!
+INFO:root:answer: I am sorry, I don't know the answer.
+INFO:root:question: who is george washington?
+INFO:root:identified question type: Who, subject: george washington
+INFO:root:search patterns: [re.compile('george\\ washington is', re.IGNORECASE), re.compile('george\\ washington was', re.IGNORECASE), re.compile("george\\ washington's full name is", re.IGNORECASE), re.compile("george\\ washington's full name was", re.IGNORECASE)]
+INFO:root:wikipedia summary: George Washington (February 22, 1732 – December 14, 1799) was an American Founding Father, military officer, and politician who served as the first president of the United States from 1789 to 1797. Appointed by the Second Continental Congress as commander of the Continental Army in 1775, Washington led Patriot forces to victory in the American Revolutionary War and then served as president of the Constitutional Convention in 1787, which drafted the current Constitution of the United States. Washington has thus become commonly known as the "Father of his Country".
+Washington's first public office, from 1749 to 1750, was as surveyor of Culpeper County in the Colony of Virginia. He subsequently received military training and was assigned command of the Virginia Regiment during the French and Indian War.
+INFO:root:answer: george washington was born on February 22, 1732.

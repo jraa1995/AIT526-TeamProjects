@@ -25,6 +25,16 @@ patterns = {
     ]
 }
 
+def compile_patterns():
+    return {
+        'Who': [re.compile(pattern.format(re.escape('{}')), re.IGNORECASE) for pattern in patterns['Who']],
+        'What': [re.compile(pattern.format(re.escape('{}')), re.IGNORECASE) for pattern in patterns['What']],
+        'When': [re.compile(pattern.format(re.escape('{}')), re.IGNORECASE) for pattern in patterns['When']],
+        'Where': [re.compile(pattern.format(re.escape('{}')), re.IGNORECASE) for pattern in patterns['Where']]
+    }
+
+compiled_patterns = compile_patterns()
+
 def setup_logging(logfile):
     logging.basicConfig(
         filename=logfile,
@@ -33,11 +43,22 @@ def setup_logging(logfile):
         datefmt='%Y-%m-%d %H:%M:%S'
     )
 
+def get_wikipedia_summary(subject):
+    try:
+        return wikipedia.summary(subject, sentences=5, auto_suggest=False, redirect=True)
+    except wikipedia.DisambiguationError as e:
+        logging.info(f"Disambiguation error options: {e.options}")
+        return wikipedia.summary(e.options[0], sentences=5, auto_suggest=False, redirect=True)
+    except wikipedia.PageError as pe:
+        logging.info(f"Wikipedia page error: {pe}")
+        return None
+    except Exception as ex:
+        logging.info(f"General error: {ex}")
+        return None
 
 def find_answer(question_type, subject):
     # generate search patterns
-    search_patterns = [re.compile(pattern.format(re.escape(subject)), re.IGNORECASE) for pattern in
-                       patterns[question_type]]
+    search_patterns = compiled_patterns[question_type]
     logging.info(f"search patterns: {search_patterns}")
     print(f"search patterns: {search_patterns}")
 

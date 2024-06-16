@@ -35,6 +35,15 @@ def compile_patterns():
 
 compiled_patterns = compile_patterns()
 
+BIRTH_DATE_PATTERN = re.compile(r"\((\w+ \d{1,2}, \d{4}) –")
+
+def check_birth_date_format(summary, subject):
+    match = BIRTH_DATE_PATTERN.search(summary)
+    if match:
+        birth_date = match.group(1)
+        return f"{subject} was born on {birth_date}."
+    return None
+
 def setup_logging(logfile):
     logging.basicConfig(
         filename=logfile,
@@ -60,48 +69,31 @@ def find_answer(question_type, subject):
     # generate search patterns
     search_patterns = compiled_patterns[question_type]
     logging.info(f"search patterns: {search_patterns}")
-    print(f"search patterns: {search_patterns}")
+    #print(f"search patterns: {search_patterns}")
 
     # search Wikipedia
-    try:
-        summary = wikipedia.summary(subject, sentences=5, auto_suggest=False, redirect=True)
-        logging.info(f"wikipedia summary: {summary}")
-        print(f"wikipedia summary: {summary}")
-    except wikipedia.DisambiguationError as e:
-        logging.info(f"disambiguation error options: {e.options}")
-        print(f"disambiguation error options: {e.options}")
-        try:
-            summary = wikipedia.summary(e.options[0], sentences=5, auto_suggest=False, redirect=True)
-            logging.info(f"wikipedia summary after disambiguation: {summary}")
-            print(f"wikipedia summary after disambiguation: {summary}")
-        except Exception as ex:
-            logging.info(f"error after disambiguation: {ex}")
-            print(f"error after disambiguation: {ex}")
-            return None
-    except wikipedia.PageError as pe:
-        logging.info(f"wikipedia page error: {pe}")
-        print(f"wikipedia page error: {pe}")
+    summary = get_wikipedia_summary(subject)
+    if not summary:
+        logging.info("No summary found in Wikipedia.")
         return None
-    except Exception as ex:
-        logging.info(f"general error: {ex}")
-        print(f"general error: {ex}")
-        return None
-
-    # check each sentence in the summary for matches
+    
+    logging.info(f"Wikipedia summary: {summary}")
+     # check each sentence in the summary for matches
     sentences = summary.split('. ')
     for sentence in sentences:
         for pattern in search_patterns:
             if pattern.search(sentence):
-                logging.info(f"matched sentence: {sentence}")
-                print(f"matched sentence: {sentence}")
+                logging.info(f"Matched sentence: {sentence}")
                 return sentence + "."
 
-    # check birth date format
-    birth_date_pattern = re.compile(r"\((\w+ \d{1,2}, \d{4}) –")
-    match = birth_date_pattern.search(summary)
-    if match:
-        birth_date = match.group(1)
-        return f"{subject} was born on {birth_date}."
+    # WHEN check birth date for when questions
+    if question_type == 'When':
+        birth_date_answer = check_birth_date_format(summary, subject)
+        if birth_date_answer:
+            return birth_date_answer
+    # WHAT Check for a simple answer if the question type is 'What'
+    if question_type == 'What':
+        return f"{summary}."
 
     return None
 
@@ -122,11 +114,17 @@ def identify_question_type_and_subject(question):
         subject_chunks = [chunk.text for chunk in doc.noun_chunks]
         if subject_chunks:
             subject = subject_chunks[-1]  # take the last noun chunk as the subject
+            # Remove common determiners from the subject
+            subject = ' '.join([word.text for word in nlp(subject) if word.pos_ != 'DET'])
 
     logging.info(f"identified question type: {question_type}, subject: {subject}")
     print(f"identified question type: {question_type}, subject: {subject}")
     return question_type, subject
 
+def log_and_print(message, level='info'):
+    print(message)
+    log_func = getattr(logging, level, 'info')
+    log_func(message)
 
 def main():
     if len(sys.argv) != 2:
@@ -134,7 +132,8 @@ def main():
         return
 
     logfile = sys.argv[1]
-    logging.basicConfig(filename=logfile, level=logging.INFO)
+    setup_logging(logfile)
+    #logging.basicConfig(filename=logfile, level=logging.INFO)
 
     print(
         "*** This is a QA system by Group 5. It will try to answer questions that start with Who, What, When or Where. Enter 'exit' to leave the program.")
@@ -145,25 +144,29 @@ def main():
             print("Thank you! Goodbye.")
             break
 
-        logging.info(f"question: {question}")
-        print(f"question: {question}")
+        #logging.info(f"question: {question}")
+        #print(f"question: {question}")
+        log_and_print(f"Question: {question}")
 
         # identify question type and subject
         question_type, subject = identify_question_type_and_subject(question)
 
         if not question_type or not subject:
-            print("I am sorry, I don't know the answer.")
-            logging.info("answer: I am sorry, I don't know the answer.")
+            log_and_print("I am sorry, I don't know the answer.", 'info')
+            #print("I am sorry, I don't know the answer.")
+            #logging.info("answer: I am sorry, I don't know the answer.")
             continue
 
         # find the answer
         answer = find_answer(question_type, subject)
         if answer:
-            print(f"=> {answer}")
-            logging.info(f"answer: {answer}")
+            log_and_print(f"=> {answer}", 'info')
+            #print(f"=> {answer}")
+            #logging.info(f"answer: {answer}")
         else:
-            print("I am sorry, I don't know the answer.")
-            logging.info("answer: I am sorry, I don't know the answer.")
+            log_and_print("I am sorry, I don't know the answer.", 'info')
+            #print("I am sorry, I don't know the answer.")
+            #logging.info("answer: I am sorry, I don't know the answer.")
 
 
 if __name__ == "__main__":

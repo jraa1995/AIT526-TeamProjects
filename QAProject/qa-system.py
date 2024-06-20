@@ -94,6 +94,8 @@ def find_answer(question_type, subject):
     # WHAT Check for a simple answer if the question type is 'What'
     if question_type == 'What':
         return f"{summary}."
+    if question_type == 'Who':
+        return f"{summary}."
 
     return None
 

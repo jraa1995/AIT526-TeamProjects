@@ -3,6 +3,7 @@ import sys
 import logging
 import spacy
 import re
+from nltk import sent_tokenize
 
 # initialize spaCy
 nlp = spacy.load('en_core_web_sm')
@@ -94,6 +95,11 @@ def find_answer(question_type, subject):
     # WHAT Check for a simple answer if the question type is 'What'
     if question_type == 'What':
         return f"{summary}."
+    if question_type == 'Who':
+        my_regex = "\(.*\)|\s-\s.*"
+        sent_tokens = sent_tokenize(summary)
+        summary1 = re.sub(my_regex, "", sent_tokens[0])
+        return f"{summary1}"
 
     return None
 

@@ -36,7 +36,7 @@ patterns = {
 
 def compile_patterns():
     return {
-        'Who': [re.compile(pattern.format(re.escape('{}')), re.IGNORECASE).lowerowe for pattern in patterns['Who']],
+        'Who': [re.compile(pattern.format(re.escape('{}')), re.IGNORECASE) for pattern in patterns['Who']],
         'What': [re.compile(pattern.format(re.escape('{}')), re.IGNORECASE) for pattern in patterns['What']],
         'When': [re.compile(pattern.format(re.escape('{}')), re.IGNORECASE) for pattern in patterns['When']],
         'Where': [re.compile(pattern.format(re.escape('{}')), re.IGNORECASE) for pattern in patterns['Where']]
@@ -191,9 +191,9 @@ def find_answer(question_type, subject, question):
 
     # WHEN check birth date for when questions
     if question_type == 'When':
-        birth_date_answer = check_birth_date_format(summary, subject, question)
+        birth_date_answer = check_birth_date_format(summary, subject.title(), question)
         logging.info(f"Birth date answer: {birth_date_answer}")
-        date_answer = check_date_pattern(summary, subject)
+        date_answer = check_date_pattern(summary, subject.title())
         logging.info(f"Date answer: {date_answer}")
         if birth_date_answer and date_answer:
             return birth_date_answer, date_answer
@@ -272,7 +272,7 @@ def main():
         log_and_print(f"Question: {question}")
 
         # identify question type and subject
-        question_type, subject = identify_question_type_and_subject(question)
+        question_type, subject = identify_question_type_and_subject(question.lower())
 
         if not question_type or not subject:
             log_and_print("I am sorry, I don't know the answer.", 'info')

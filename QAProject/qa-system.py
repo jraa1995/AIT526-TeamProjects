@@ -180,6 +180,7 @@ def find_answer(question_type, subject, question):
                 return sentence + "."
 
     # WHEN check birth date for when questions
+    # adds both responses to response if matches both
     if question_type == 'When':
         birth_date_answer = check_birth_date_format(summary, subject, question)
         logging.info(f"Birth date answer: {birth_date_answer}")

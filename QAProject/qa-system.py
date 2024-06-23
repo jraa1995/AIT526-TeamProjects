@@ -13,10 +13,12 @@ nlp = spacy.load('en_core_web_sm')
 # define answer patterns for different types of questions
 patterns = {
     'Who': [
-        r"{} is", r"{} was", r"{}'s full name is", r"{}'s full name was"
+        r"{} is", r"{} was", r"{}'s full name is", r"{}'s full name was",
+        r"{} (is|was) (a|an|the)", r"{} (is|was) known as", r"{} (is|was) famous for"
     ],
     'What': [
-        r"{} is", r"{} was", r"{} refers to", r"{} can be defined as", r"{} can be described as"
+        r"{} is", r"{} was", r"{} refers to", r"{} can be defined as", r"{} can be described as",
+        r"{} (is|was) (a|an|the)", r"{} (is|was) used for", r"{} (is|was) known for", r"{} (is|was) characterized by"
     ],
     'When': [
         r"{} was born on", r"{} was born", r"{} was born in", r"{} was founded on", r"{} was established on",

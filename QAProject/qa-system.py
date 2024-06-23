@@ -13,15 +13,18 @@ patterns = {
         r"{} is", r"{} was", r"{}'s full name is", r"{}'s full name was"
     ],
     'What': [
-        r"{} is", r"{} was", r"{} refers to", r"{} can be defined as"
+        r"{} is", r"{} was", r"{} refers to", r"{} can be defined as", r"{} can be described as"
     ],
     'When': [
         r"{} was born on", r"{} was born", r"{} was born in", r"{} was founded on", r"{} was established on",
-        r"{} happened on",
-        r"born on {} on", r"born on {} in", r"born on {}"
+        r"{} happened on", r"born on {} on", r"born on {} in", r"born on {}",
+        r"{}'s birthdate is", r"{}'s birthday is", r"The birthdate of {} is", r"The birthday of {} is",
+        r"{} came into the world on", r"{}'s date of birth is", r"{} entered the world on"
     ],
     'Where': [
-        r"{} is located in", r"{} is found in", r"{} is situated in", r"{} is in", r"{} is at"
+        r"{} is located in", r"{} is found in", r"{} is situated in", r"{} is in", r"{} is at",
+        r"The address of {} is", r"{} is near", r"{} is close to", r"{} is around", r"{} is within",
+        r"{} lies in", r"{} sits in", r"{} resides in", r"{} is positioned in", r"{} is placed in"
     ]
 }
 
@@ -91,11 +94,31 @@ def find_answer(question_type, subject):
         birth_date_answer = check_birth_date_format(summary, subject)
         if birth_date_answer:
             return birth_date_answer
-    # WHAT Check for a simple answer if the question type is 'What'
-    if question_type == 'What':
+    #TODO: Fix the when question
+    # WHEN check for date in the summary
+    if question_type == 'When':
+        date_entities = [ent.text for ent in nlp(summary).ents if ent.label_ == "DATE"]
+        for date in date_entities:
+            if subject.lower() in date.lower():
+                for sentence in sentences:
+                    if date in sentence:
+                        logging.info(f"Matched sentence: {sentence}")
+                        return sentence + "."
+
+    # WHAT/WHO Check for a simple answer if the question type is 'What'/'Who'
+    if question_type in ['What', 'Who']:
         return f"{summary}."
-    if question_type == 'Who':
-        return f"{summary}."
+    #TODO: Fix the where question
+    # WHERE check for location in the summary
+    if question_type == 'Where':
+        location_entities = [ent.text for ent in nlp(summary).ents if ent.label_ in ["GPE", "LOC"]]
+        for location in location_entities:
+            if subject.lower() in location.lower():
+                for sentence in sentences:
+                    if location in sentence:
+                        logging.info(f"Matched sentence: {sentence}")
+                        return sentence + "."
+    
 
     return None
 

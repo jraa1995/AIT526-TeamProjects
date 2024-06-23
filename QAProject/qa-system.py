@@ -43,48 +43,99 @@ def compile_patterns():
 
 compiled_patterns = compile_patterns()
 
-BIRTH_DATE_PATTERN = re.compile(r"\((\w+ \d{1,2}, \d{4}) â")
+# BIRTH_DATE_PATTERN = re.compile(r"\((\w+ \d{1,2}, \d{4}) â")
 
-DATE_PATTERN = re.compile(r"\((\d{1,2} \w+ \d{4}) â")
-DATEPATTERN1 = re.compile(r'\d{1,2} \w+ \d{4}')
-datepattern2 = re.compile(r"\((\w+ \d{1,2}, \d{4}) â")
+# DATE_PATTERN = re.compile(r"\((\d{1,2} \w+ \d{4}) â")
+# DATEPATTERN1 = re.compile(r'\d{1,2} \w+ \d{4}')
+# datepattern2 = re.compile(r"\((\w+ \d{1,2}, \d{4}) â")
 
-locationpattern = re.compile(r'\blocated.*\b')
-locationpattern1 = re.compile(r'in [^.]*\.')
+# locationpattern = re.compile(r'\blocated.*\b')
+# locationpattern1 = re.compile(r'in [^.]*\.')
 
-def check_birth_date_format(summary, subject, question):
-    if 'born'in question:
-        match = BIRTH_DATE_PATTERN.search(summary)
+# Date patterns
+DATE_PATTERNS = [
+    re.compile(r"\((\w+ \d{1,2}, \d{4})\s*[-–]\s*"),
+    re.compile(r"\((\d{1,2} \w+ \d{4})\s*[-–]\s*"),
+    re.compile(r"born\s+on\s+(\w+ \d{1,2},? \d{4})"),
+    re.compile(r"(\d{1,2}\s+\w+\s+\d{4})"),
+    re.compile(r"(\w+\s+\d{1,2},?\s+\d{4})")
+]
+
+# Location patterns
+LOCATION_PATTERNS = [
+    re.compile(r'\b(?:located|situated|found|based)\s+in\s+([^.]+)'),
+    re.compile(r'in\s+([^.]+)(?:\s+(?:city|state|country|region))?'),
+    re.compile(r'(?:at|near)\s+([^.]+)')
+]
+
+def extract_date(text):
+    for pattern in DATE_PATTERNS:
+        match = pattern.search(text)
         if match:
-            birth_date = match.group(1)
-            return f"{subject} was born on {birth_date}."
+            return match.group(1)
     return None
 
+def extract_location(text):
+    for pattern in LOCATION_PATTERNS:
+        match = pattern.search(text)
+        if match:
+            return match.group(1).strip()
+    return None
+
+# def check_birth_date_format(summary, subject, question):
+#     if 'born'in question:
+#         match = BIRTH_DATE_PATTERN.search(summary)
+#         if match:
+#             birth_date = match.group(1)
+#             return f"{subject} was born on {birth_date}."
+#     return None
+
+# Update the check_birth_date_format function
+def check_birth_date_format(summary, subject, question):
+    if 'born' in question.lower():
+        date = extract_date(summary)
+        if date:
+            return f"{subject} was born on {date}."
+    return None
+
+# Update the check_date_pattern function
 def check_date_pattern(summary, subject):
-   match = DATE_PATTERN.search(summary)
-   match1 = DATEPATTERN1.search(summary)
-   match2 = datepattern2.search(summary)
-   if match1:
-       date = match1.group(0)
-       return f"{subject} started on {date}."
-   if match:
-       date = match.group(1)
-       return f"{subject} started on {date}."
-   if match2:
-       date = match2.group(1)
-       return f"{subject} started on {date}."
-   return None
+    date = extract_date(summary)
+    if date:
+        return f"{subject} is associated with the date {date}."
+    return None
 
 def check_location_pattern(summary, subject):
-    match = locationpattern.search(summary)
-    match1 = locationpattern1.search(summary)
-    if match:
-        location = match.group(0)
-        return f"{subject} is {location}." 
-    if match1:
-        location = match1.group(0)
-        return f"{subject} is {location}"
+    location = extract_location(summary)
+    if location:
+        return f"{subject} is located in {location}."
     return None
+
+# def check_date_pattern(summary, subject):
+#    match = DATE_PATTERN.search(summary)
+#    match1 = DATEPATTERN1.search(summary)
+#    match2 = datepattern2.search(summary)
+#    if match1:
+#        date = match1.group(0)
+#        return f"{subject} started on {date}."
+#    if match:
+#        date = match.group(1)
+#        return f"{subject} started on {date}."
+#    if match2:
+#        date = match2.group(1)
+#        return f"{subject} started on {date}."
+#    return None
+
+# def check_location_pattern(summary, subject):
+#     match = locationpattern.search(summary)
+#     match1 = locationpattern1.search(summary)
+#     if match:
+#         location = match.group(0)
+#         return f"{subject} is {location}." 
+#     if match1:
+#         location = match1.group(0)
+#         return f"{subject} is {location}"
+#     return None
 
 def setup_logging(logfile):
     logging.basicConfig(

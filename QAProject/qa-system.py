@@ -160,6 +160,8 @@ def find_answer(question_type, subject, question):
                 return sentence + "."
 
     # WHEN check birth date for when questions
+    # checking for both birth date and date, returning both when both are present in wiki response.
+    # re-capitalization of 'subject' identification to resume proper grammar.
     if question_type == 'When':
         birth_date_answer = check_birth_date_format(summary, subject.title(), question)
         logging.info(f"Birth date answer: {birth_date_answer}")
@@ -242,6 +244,8 @@ def main():
         log_and_print(f"Question: {question}")
 
         # identify question type and subject
+        # put input to lower case, this helps avoid misidentification of nouns
+        # (i.e., "...George Washington Born?" could be perceived be a first, middle, and last name)
         question_type, subject = identify_question_type_and_subject(question.lower())
 
         if not question_type or not subject:

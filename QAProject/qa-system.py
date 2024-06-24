@@ -181,11 +181,13 @@ def find_answer(question_type, subject, question):
     # WHAT Check for a simple answer if the question type is 'What'
     if question_type == 'What':
         return f"{summary}"
+    # WHO Clean the first sentence of the summary for 'Who' questions by removing text in parentheses and after hyphens
     if question_type == 'Who':
         my_regex = "\(.*\)|\s-\s.*"
         sent_tokens = sent_tokenize(summary)
         summary1 = re.sub(my_regex, "", sent_tokens[0])
         return f"{summary1}"
+    # WHERE Check for location-related information in the summary for 'Where' questions and return the result if found.
     if question_type == 'Where':
         location_answer = check_location_pattern(summary, subject)
         if location_answer:

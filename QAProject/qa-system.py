@@ -1,3 +1,19 @@
+#Group 5, Team members:  Jose Augila, Marcos Portillo, Ben Stewart and Allison Rohrer, Course# AIT526, Date: 6-23-2024
+#Question answer system
+
+#explanation and algorithm
+#This system will take who, what, where and when questions and search Wikipedia to find the answers.
+#For example, if you ask who is George Washington, the system will respond with George Washtington's most relevant titles
+#and accomplishments.  For where questions, the system will provide a sentence starting with the place and its location.  
+#for what questions, the system will provide a five setence summary of the item.  for when questions, the system 
+#will provide a date of the event and the system will also provide birthdays. 
+ 
+#The system extracts a subject and question type from user input, and then uses the subject to find a wikipedia summary. 
+#once the wikipedia summary is found, the question type is used to pull the answer from the wikipedia summary.  For example,
+#if the question is when was George Washington born?  The system will flag that it is a when question and more specifically a birthday
+#question so it will pull the birthdate from the summary provided and construct an answer appropriate for a birthday question.
+
+
 import wikipedia
 import sys
 import logging
@@ -5,7 +21,6 @@ import spacy
 import re
 from nltk import sent_tokenize
 
-# notes - need to add additional date formats, need to make sure there is way to distinguish birthday's from dates,  need to add location regex
 
 # initialize spaCy
 nlp = spacy.load('en_core_web_sm')
@@ -45,16 +60,7 @@ def compile_patterns():
 
 compiled_patterns = compile_patterns()
 
-# BIRTH_DATE_PATTERN = re.compile(r"\((\w+ \d{1,2}, \d{4}) â")
 
-# DATE_PATTERN = re.compile(r"\((\d{1,2} \w+ \d{4}) â")
-# DATEPATTERN1 = re.compile(r'\d{1,2} \w+ \d{4}')
-# datepattern2 = re.compile(r"\((\w+ \d{1,2}, \d{4}) â")
-
-# locationpattern = re.compile(r'\blocated.*\b')
-# locationpattern1 = re.compile(r'in [^.]*\.')
-
-# Date patterns
 DATE_PATTERNS = [
     re.compile(r"\((\w+ \d{1,2}, \d{4})\s*[-–]\s*"),
     re.compile(r"\((\d{1,2} \w+ \d{4})\s*[-–]\s*"),
@@ -70,7 +76,7 @@ LOCATION_PATTERNS = [
     re.compile(r'(?:at|near)\s+([^.]+)')
 ]
 
-
+#functions to search summaries extract dates and locations using date and location patterns
 def extract_date(text):
     for pattern in DATE_PATTERNS:
         match = pattern.search(text)
@@ -86,16 +92,6 @@ def extract_location(text):
             return match.group(1).strip()
     return None
 
-
-# def check_birth_date_format(summary, subject, question):
-#     if 'born'in question:
-#         match = BIRTH_DATE_PATTERN.search(summary)
-#         if match:
-#             birth_date = match.group(1)
-#             return f"{subject} was born on {birth_date}."
-#     return None
-
-# Update the check_birth_date_format function
 def check_birth_date_format(summary, subject, question):
     if 'born' in question.lower():
         date = extract_date(summary)
@@ -104,7 +100,7 @@ def check_birth_date_format(summary, subject, question):
     return None
 
 
-# Update the check_date_pattern function
+# functions to return dates, birthdays and locations  using extract date and location functions
 def check_date_pattern(summary, subject):
     date = extract_date(summary)
     if date:
@@ -118,33 +114,7 @@ def check_location_pattern(summary, subject):
         return f"{subject} is located in {location}."
     return None
 
-
-# def check_date_pattern(summary, subject):
-#    match = DATE_PATTERN.search(summary)
-#    match1 = DATEPATTERN1.search(summary)
-#    match2 = datepattern2.search(summary)
-#    if match1:
-#        date = match1.group(0)
-#        return f"{subject} started on {date}."
-#    if match:
-#        date = match.group(1)
-#        return f"{subject} started on {date}."
-#    if match2:
-#        date = match2.group(1)
-#        return f"{subject} started on {date}."
-#    return None
-
-# def check_location_pattern(summary, subject):
-#     match = locationpattern.search(summary)
-#     match1 = locationpattern1.search(summary)
-#     if match:
-#         location = match.group(0)
-#         return f"{subject} is {location}."
-#     if match1:
-#         location = match1.group(0)
-#         return f"{subject} is {location}"
-#     return None
-
+#function to create log file to log questions and answers
 def setup_logging(logfile):
     logging.basicConfig(
         filename=logfile,
@@ -153,7 +123,7 @@ def setup_logging(logfile):
         datefmt='%Y-%m-%d %H:%M:%S'
     )
 
-
+#function to extract five sentence wikipedia summary using subject 
 def get_wikipedia_summary(subject):
     try:
         return wikipedia.summary(subject, sentences=5, auto_suggest=False, redirect=True)
@@ -167,7 +137,7 @@ def get_wikipedia_summary(subject):
         logging.info(f"General error: {ex}")
         return None
 
-
+#function to find answer in the wikipedia summary using the question type and subject
 def find_answer(question_type, subject, question):
     # generate search patterns
     search_patterns = compiled_patterns[question_type]
@@ -216,7 +186,7 @@ def find_answer(question_type, subject, question):
 
     return None
 
-
+#extract the question type and subject
 def identify_question_type_and_subject(question):
     doc = nlp(question)
     question_type = None
@@ -240,13 +210,13 @@ def identify_question_type_and_subject(question):
     print(f"identified question type: {question_type}, subject: {subject}")
     return question_type, subject
 
-
+#function for logging 
 def log_and_print(message, level='info'):
     print(message)
     log_func = getattr(logging, level, 'info')
     log_func(message)
 
-
+#main function to pull questions from user and provide responses using earlier functions 
 def main():
     if len(sys.argv) != 2:
         print(len(sys.argv))

@@ -13,7 +13,7 @@
 #if the question is when was George Washington born?  The system will flag that it is a when question and more specifically a birthday
 #question so it will pull the birthdate from the summary provided and construct an answer appropriate for a birthday question.
 
-
+# Importing necessary libraries
 import wikipedia
 import sys
 import logging
@@ -25,7 +25,7 @@ from nltk import sent_tokenize
 # initialize spaCy
 nlp = spacy.load('en_core_web_sm')
 
-# define answer patterns for different types of questions
+# define answer patterns for different types of questions (Who, What, When, Where)
 patterns = {
     'Who': [
         r"{} is", r"{} was", r"{}'s full name is", r"{}'s full name was",
@@ -48,7 +48,7 @@ patterns = {
     ]
 }
 
-
+ # Define function to compile patterns
 def compile_patterns():
     return {
         'Who': [re.compile(pattern.format(re.escape('{}')), re.IGNORECASE) for pattern in patterns['Who']],
@@ -57,10 +57,10 @@ def compile_patterns():
         'Where': [re.compile(pattern.format(re.escape('{}')), re.IGNORECASE) for pattern in patterns['Where']]
     }
 
-
+# Compile patterns
 compiled_patterns = compile_patterns()
 
-
+# Date patterns
 DATE_PATTERNS = [
     re.compile(r"\((\w+ \d{1,2}, \d{4})\s*[-–]\s*"),
     re.compile(r"\((\d{1,2} \w+ \d{4})\s*[-–]\s*"),
@@ -76,7 +76,7 @@ LOCATION_PATTERNS = [
     re.compile(r'(?:at|near)\s+([^.]+)')
 ]
 
-#functions to search summaries extract dates and locations using date and location patterns
+# Functions to search summaries extract dates and locations using date and location patterns
 def extract_date(text):
     for pattern in DATE_PATTERNS:
         match = pattern.search(text)
@@ -84,7 +84,7 @@ def extract_date(text):
             return match.group(1)
     return None
 
-
+# Extract location from text
 def extract_location(text):
     for pattern in LOCATION_PATTERNS:
         match = pattern.search(text)
@@ -92,6 +92,7 @@ def extract_location(text):
             return match.group(1).strip()
     return None
 
+# Function to check birth date format
 def check_birth_date_format(summary, subject, question):
     if 'born' in question.lower():
         date = extract_date(summary)
@@ -100,21 +101,21 @@ def check_birth_date_format(summary, subject, question):
     return None
 
 
-# functions to return dates, birthdays and locations  using extract date and location functions
+# Functions to return dates, birthdays and locations  using extract date and location functions
 def check_date_pattern(summary, subject):
     date = extract_date(summary)
     if date:
         return f"{subject} is associated with the date {date}."
     return None
 
-
+# Function to check location pattern
 def check_location_pattern(summary, subject):
     location = extract_location(summary)
     if location:
         return f"{subject} is located in {location}."
     return None
 
-#function to create log file to log questions and answers
+# Function to create log file to log questions and answers
 def setup_logging(logfile):
     logging.basicConfig(
         filename=logfile,
@@ -127,12 +128,15 @@ def setup_logging(logfile):
 def get_wikipedia_summary(subject):
     try:
         return wikipedia.summary(subject, sentences=5, auto_suggest=False, redirect=True)
+    # handle disambiguation error
     except wikipedia.DisambiguationError as e:
         logging.info(f"Disambiguation error options: {e.options}")
         return wikipedia.summary(e.options[0], sentences=5, auto_suggest=False, redirect=True)
+    # handle page error
     except wikipedia.PageError as pe:
         logging.info(f"Wikipedia page error: {pe}")
         return None
+    # handle general exception
     except Exception as ex:
         logging.info(f"General error: {ex}")
         return None
@@ -142,7 +146,6 @@ def find_answer(question_type, subject, question):
     # generate search patterns
     search_patterns = compiled_patterns[question_type]
     logging.info(f"search patterns: {search_patterns}")
-    # print(f"search patterns: {search_patterns}")
 
     # search Wikipedia
     summary = get_wikipedia_summary(subject)
@@ -151,6 +154,7 @@ def find_answer(question_type, subject, question):
         return None
 
     logging.info(f"Wikipedia summary: {summary}")
+
     # check each sentence in the summary for matches
     sentences = summary.split('. ')
     for sentence in sentences:
@@ -173,6 +177,7 @@ def find_answer(question_type, subject, question):
             return birth_date_answer
         else:
             return date_answer
+        
     # WHAT Check for a simple answer if the question type is 'What'
     if question_type == 'What':
         return f"{summary}"
@@ -228,7 +233,6 @@ def main():
     logfile = sys.argv[1]
 
     setup_logging(logfile)
-    # logging.basicConfig(filename=logfile, level=logging.INFO)
 
     print(
         "*** This is a QA system by Group 5. It will try to answer questions that start with Who, What, When or Where. Enter 'exit' to leave the program.")

@@ -1,0 +1,114 @@
+Question: Who is George Washington?
+Correct Answer: George Washington was an American Founding Father, military officer, and politician who served as the first president of the United States from 1789 to 1797.
+My System Answer: George Washington  was an American Founding Father, military officer, and politician who served as the first president of the United States from 1789 to 1797. (incorrect)
+
+Question: Who is Albert Einstein?
+Correct Answer: Albert Einstein was a theoretical physicist who developed the theory of relativity.
+My System Answer: Albert Einstein  was a German-born theoretical physicist who is widely held to be one of the greatest and most influential scientists of all time. (incorrect)
+
+Question: Who is William Shakespeare?
+Correct Answer: William Shakespeare was an English playwright, poet, and actor.
+My System Answer: William Shakespeare  was an English playwright, poet and actor. (incorrect)
+
+Question: Who is Marie Curie?
+Correct Answer: Marie Curie was a physicist and chemist who conducted pioneering research on radioactivity.
+My System Answer: Maria Salomea Skłodowska-Curie , was a Polish and naturalised-French physicist and chemist who conducted pioneering research on radioactivity. (incorrect)
+
+Question: Who is Leonardo da Vinci?
+Correct Answer: Leonardo da Vinci was an Italian polymath of the Renaissance, known for his works in art, science, and engineering.
+My System Answer: Leonardo di ser Piero da Vinci  was an Italian polymath of the High Renaissance who was active as a painter, draughtsman, engineer, scientist, theorist, sculptor, and architect. (incorrect)
+
+Question: What is the Great Wall of China?
+Correct Answer: The Great Wall of China is a series of fortifications made of stone, brick, tamped earth, wood, and other materials.
+My System Answer: China, officially the People's Republic of China (PRC), is a country in East Asia. With a population exceeding 1.4 billion, it is the world's second-most populous country after India and contains 17.4% of the world population. China spans the equivalent of five time zones and borders fourteen countries by land. With an area of nearly 9.6 million square kilometers (3,700,000 sq mi), it is the third-largest country by total land area. The country is divided into 33 province-level divisions: 22 provinces, five autonomous regions, four municipalities, and two semi-autonomous special administrative regions. (incorrect)
+
+Question: What is the Theory of Evolution?
+Correct Answer: The Theory of Evolution is the process by which different kinds of living organisms are thought to have developed and diversified from earlier forms during the history of the earth.
+My System Answer: Evolution is the change in the heritable characteristics of biological populations over successive generations. It occurs when evolutionary processes such as natural selection and genetic drift act on genetic variation, resulting in certain characteristics becoming more or less common within a population over successive generations. The process of evolution has given rise to biodiversity at every level of biological organisation.
+The scientific theory of evolution by natural selection was conceived independently by two British naturalists, Charles Darwin and Alfred Russel Wallace, in the mid-19th century as an explanation for why organisms are adapted to their physical and biological environments. The theory was first set out in detail in Darwin's book On the Origin of Species. (incorrect)
+
+Question: What is the largest mammal?
+Correct Answer: The largest mammal is the blue whale.
+My System Answer: I am sorry, I don't know the answer. (incorrect)
+
+Question: What is the periodic table?
+Correct Answer: The periodic table is a tabular arrangement of the chemical elements, organized by their atomic number, electron configuration, and recurring chemical properties.
+My System Answer: I am sorry, I don't know the answer. (incorrect)
+
+Question: What is the function of the heart?
+Correct Answer: The function of the heart is to pump blood throughout the body via the circulatory system.
+My System Answer: The heart is a muscular organ found in most animals. This organ pumps blood through the blood vessels of the circulatory system. The pumped blood carries oxygen and nutrients to the body, while carrying metabolic waste such as carbon dioxide to the lungs. In humans, the heart is approximately the size of a closed fist and is located between the lungs, in the middle compartment of the chest, called the mediastinum.
+In humans, other mammals, and birds, the heart is divided into four chambers: upper left and right atria and lower left and right ventricles. (incorrect)
+
+Question: When was George Washington born?
+Correct Answer: George Washington was born on February 22, 1732.
+My System Answer: George Washington was born on February 22, 1732. or George Washington is associated with the date February 22, 1732. (correct)
+
+Question: When was the first moon landing?
+Correct Answer: The first moon landing was on July 20, 1969.
+My System Answer: I am sorry, I don't know the answer. (incorrect)
+
+Question: When did Neil Armstrong walk on the moon?
+Correct Answer: Neil Armstrong walked on the moon on July 20, 1969.
+My System Answer: I am sorry, I don't know the answer. (incorrect)
+
+Question: Whne did the American Civil War start?
+Correct Answer: The American Civil War started on April 12, 1861.
+My System Answer: I am sorry, I don't know the answer. (incorrect)
+
+Question: When was the first iPhone released?
+Correct Answer: The first iPhone was released on June 29, 2007.
+My System Answer: The First Iphone is associated with the date January 9, 2007. (incorrect)
+
+Question: When was Google founded?
+Correct Answer: Google was founded on September 4, 1998.
+My System Answer: Google is associated with the date September 4, 1998. (incorrect)
+
+Question: When was William Shakespeare born?
+Correct Answer: William Shakespeare was born on April 23, 1564.
+My System Answer: William Shakespeare was born on 23 April 1564. or William Shakespeare is associated with the date 23 April 1564. (incorrect)
+
+Question: Where is the Eiffel Tower located?
+Correct Answer: The Eiffel Tower is located in Paris, France.
+My System Answer: I am sorry, I don't know the answer. (incorrect)
+
+Question: Where is the Great Wall of China?
+Correct Answer: The Great Wall of China is located in northern China.
+My System Answer: china is located in East Asia. (incorrect)
+
+Question: Where is the Statue of Libery located?
+Correct Answer: The Statue of Liberty is located in New York Harbor, USA.
+My System Answer: I am sorry, I don't know the answer. (incorrect)
+
+Question: Where is the Statue of Liberty located?
+Correct Answer: The Statue of Liberty is located in New York Harbor, USA.
+My System Answer: liberty is located in society from oppressive restrictions imposed by authority on one's way of life, behavior, or political views. (incorrect)
+
+Question: Where is Mount Everest located?
+Correct Answer: Mount Everest is located in the Himalayas, on the border between Nepal and Tibet.
+My System Answer: mount everest is located in the Mahalangur Himal sub-range of the Himalayas. (incorrect)
+
+Question: Where is the Sahara Desert?
+Correct Answer: The Sahara Desert is located in North Africa.
+My System Answer: I am sorry, I don't know the answer. (incorrect)
+
+Question: Where is Buckingham Palace located?
+Correct Answer: Buckingham Palace is located in London, England.
+My System Answer: buckingham palace is located in London, and the administrative headquarters of the monarch of the United Kingdom. (incorrect)
+
+Question: Where is the Sydney Opera House located?
+Correct Answer: The Sydney Opera House is located in Sydney, Australia.
+My System Answer: I am sorry, I don't know the answer. (incorrect)
+
+Question: Where is the Amazon Rainforest?
+Correct Answer: The Amazon Rainforest is located in South America, primarily in Brazil.
+My System Answer: I am sorry, I don't know the answer. (incorrect)
+
+Question: Where is the Great Barrier Reef?
+Correct Answer: The Great Barrier Reef is located off the coast of Queensland, Australia.
+My System Answer: I am sorry, I don't know the answer. (incorrect)
+
+Question: Where is the Philippines?
+Correct Answer: Southeast Asia.
+My System Answer: the philippines is located in Southeast Asia. (correct)
+

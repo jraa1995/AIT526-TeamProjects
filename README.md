@@ -5,7 +5,7 @@ This repository contains a Naive Bayes classifier for sentiment classification o
 ## Project Structure
 
 SENTIMENTCLASS
-├── __MACOSX
+├── __MACOSX <br>
 ├── Classifier Project
 ├── tweet (contains train and test subdirectories)
 ├── venv (virtual environment)

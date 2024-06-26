@@ -4,19 +4,19 @@ This repository contains a Naive Bayes classifier for sentiment classification o
 
 ## Project Structure
 
-SENTIMENTCLASS
+SENTIMENTCLASS <br>
 ├── __MACOSX <br>
-├── Classifier Project
-├── tweet (contains train and test subdirectories)
-├── venv (virtual environment)
-├── classifier.py
-├── results_stemming_False_binary.txt
-├── results_stemming_False_frequency.txt
-├── results_stemming_True_binary.txt
-├── results_stemming_True_frequency.txt
-├── tweet.zip
-├── .gitignore
-└── README.md
+├── Classifier Project<br>
+├── tweet (contains train and test subdirectories)<br>
+├── venv (virtual environment)<br>
+├── classifier.py<br>
+├── results_stemming_False_binary.txt<br>
+├── results_stemming_False_frequency.txt<br>
+├── results_stemming_True_binary.txt<br>
+├── results_stemming_True_frequency.txt<br>
+├── tweet.zip<br>
+├── .gitignore<br>
+└── README.md<br>
 
 markdown
 Copy code

@@ -1,1 +1,8 @@
+venv/
+__MACOSX/
+*.pyc
+pycache/
 .DS_Store
+tweet/
+tweet.zip
+

@@ -7,6 +7,10 @@ from nltk.stem import PorterStemmer
 from collections import defaultdict, Counter
 from bs4 import BeautifulSoup
 import emoji
+import logging
+
+# Setup logging
+logging.basicConfig(filename='output_log.txt', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # preprocessing
 def preprocess_text(text):
@@ -169,14 +173,17 @@ def main():
             # eval
             accuracy, predictions = evaluate_naive_bayes(test_reviews, test_labels, prior_pos, prior_neg, pos_likelihoods, neg_likelihoods, vocab, stem, binary)
             print(f"Stemming: {bool(stem)}, Binary: {binary}, Accuracy: {accuracy}")
+            logging.info(f"Stemming: {bool(stem)}, Binary: {binary}, Accuracy: {accuracy}")
 
             # confusion matrix
             confusion_matrix = calculate_confusion_matrix(predictions, test_labels)
             print("Confusion Matrix:\n", confusion_matrix)
+            logging.info(f"Confusion Matrix:\n{confusion_matrix}")
 
             # performance metrics
             precision, recall, accuracy, f1_score = calculate_performance(confusion_matrix)
             print(f"Precision: {precision}, Recall: {recall}, Accuracy: {accuracy}, F1 Score: {f1_score}")
+            logging.info(f"Precision: {precision}, Recall: {recall}, Accuracy: {accuracy}, F1 Score: {f1_score}")
 
             # save results and log file
             with open(f'results_stemming_{bool(stem)}_binary_{binary}.txt', 'w') as file:

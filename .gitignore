@@ -6,3 +6,4 @@ pycache/
 tweet/
 tweet.zip
 output_log.txt
+predictions.csv

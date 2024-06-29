@@ -173,7 +173,7 @@ def main():
             # eval
             accuracy, predictions = evaluate_naive_bayes(test_reviews, test_labels, prior_pos, prior_neg, pos_likelihoods, neg_likelihoods, vocab, stem, binary)
             print(f"Stemming: {bool(stem)}, Binary: {binary}, Accuracy: {accuracy}")
-            logging.info(f"Stemming: {bool(stem)}, Binary: {binary}, Accuracy: {accuracy}")
+            logging.info(f"Stemming: {bool(stem)}, Binary: {binary}, Accuracy: {accuracy}")        
 
             # confusion matrix
             confusion_matrix = calculate_confusion_matrix(predictions, test_labels)

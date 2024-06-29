@@ -1,6 +1,7 @@
 import os
 import re
 import numpy as np
+import pandas as pd
 import torch
 from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
@@ -164,16 +165,30 @@ def main():
     vocabulary = create_vocabulary(train_reviews)
     stemmed_vocabulary = create_vocabulary(train_reviews, stemmer)
 
+    # Prepare the DataFrame
+    columns = ['Document', 'Review']
+    for stem in ['No-Stemming', 'Stemming']:
+        for binary in ['Frequency Count', 'Binary']:
+            columns.append(f'{stem} + {binary}')
+    df = pd.DataFrame(columns=columns)
+
+    # Initialize the DataFrame with document numbers and reviews
+    df['Document'] = range(1, len(test_reviews) + 1)
+    df['Review'] = test_reviews
+
     # extract and train
-    for stem, vocab in zip([None, stemmer], [vocabulary, stemmed_vocabulary]):
-        for binary in [False, True]:
+    for i, (stem, vocab) in enumerate(zip([None, stemmer], [vocabulary, stemmed_vocabulary])):
+        for j, binary in enumerate([False, True]):
             train_features = extract_features_bow(train_reviews, vocab, stem, binary)
             prior_pos, prior_neg, pos_likelihoods, neg_likelihoods = train_naive_bayes_bow(train_features, train_labels, vocab, binary)
 
             # eval
             accuracy, predictions = evaluate_naive_bayes(test_reviews, test_labels, prior_pos, prior_neg, pos_likelihoods, neg_likelihoods, vocab, stem, binary)
             print(f"Stemming: {bool(stem)}, Binary: {binary}, Accuracy: {accuracy}")
-            logging.info(f"Stemming: {bool(stem)}, Binary: {binary}, Accuracy: {accuracy}")        
+            logging.info(f"Stemming: {bool(stem)}, Binary: {binary}, Accuracy: {accuracy}")  
+
+            # Add the predictions to the DataFrame
+            df[f'{columns[2 + i * 2 + j]}'] = predictions      
 
             # confusion matrix
             confusion_matrix = calculate_confusion_matrix(predictions, test_labels)
@@ -191,6 +206,9 @@ def main():
                 file.write("Confusion Matrix:\n")
                 file.write(f"{confusion_matrix}\n")
                 file.write(f"Precision: {precision}, Recall: {recall}, Accuracy: {accuracy}, F1 Score: {f1_score}\n")
+
+    # Write the DataFrame to a CSV file
+    df.to_csv('predictions.csv', index=False)
 
 if __name__ == "__main__":
     main()

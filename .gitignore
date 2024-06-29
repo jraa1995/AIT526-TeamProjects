@@ -5,4 +5,4 @@ pycache/
 .DS_Store
 tweet/
 tweet.zip
-
+output_log.txt

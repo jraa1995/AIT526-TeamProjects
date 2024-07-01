@@ -7,16 +7,24 @@ from sklearn.model_selection import train_test_split, StratifiedKFold
 from imblearn.over_sampling import SMOTE
 from transformers import pipeline, BertTokenizer, BertForSequenceClassification, Trainer, TrainingArguments
 import torch
+import logging
+
+# Initialize logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
+handlers=[logging.FileHandler("sentiment_analysis.txt"), logging.StreamHandler()])
+logger = logging.getLogger()
+
 
 # load the datasets
-all_news_sentiments = pd.read_csv('Main-Project/all_news_sentiments_v2.csv')
-all_historical_prices = pd.read_csv('Main-Project/all_historical_prices.csv')
+all_news_sentiments = pd.read_csv('all_news_sentiments_v2.csv')
+all_historical_prices = pd.read_csv('all_historical_prices.csv')
 
 # convert dates to datetime and remove timezone if present
 all_news_sentiments['publishedDate'] = pd.to_datetime(all_news_sentiments['publishedDate']).dt.tz_localize(None)
 all_historical_prices['date'] = pd.to_datetime(all_historical_prices['date']).dt.tz_localize(None)
 
 # load pre-trained sentiment analysis model
+logger.info("Loading sentiment analysis model...")
 sentiment_analyzer = pipeline("sentiment-analysis")
 
 # function to get sentiment from title
@@ -29,14 +37,30 @@ def get_sentiment(title):
     else:
         return 2
 
+# Process data in batches
+batch_size = 1000
+num_batches = len(all_news_sentiments) // batch_size + 1
+
+logger.info(f"Processing data in {num_batches} batches...")
+
+all_news_sentiments['predicted_sentiment'] = 0  # Initialize column
+
+for i in range(num_batches):
+    start = i * batch_size
+    end = (i + 1) * batch_size
+    batch_data = all_news_sentiments.iloc[start:end]
+    logger.info(f"Processing batch {i + 1}/{num_batches}...")
+    all_news_sentiments.loc[start:end, 'predicted_sentiment'] = batch_data['title'].apply(get_sentiment)
+
 # apply sentiment analysis on titles
-all_news_sentiments['predicted_sentiment'] = all_news_sentiments['title'].apply(get_sentiment)
+#all_news_sentiments['predicted_sentiment'] = all_news_sentiments['title'].apply(get_sentiment)
 
 # map sentiment labels to integers
 sentiment_mapping = {'Negative': 0, 'Neutral': 1, 'Positive': 2}
 all_news_sentiments['sentiment'] = all_news_sentiments['sentiment'].map(sentiment_mapping)
 
 # check dataset size
+logger.info(f"Total dataset size: {all_news_sentiments.shape[0]} rows")
 print(f"total dataset size: {all_news_sentiments.shape[0]} rows")
 
 # merge news sentiments with historical prices
@@ -71,6 +95,7 @@ train_data, test_data = train_test_split(all_news_sentiments, test_size=0.2, ran
 train_titles = set(train_data['title'])
 test_titles = set(test_data['title'])
 overlap = train_titles.intersection(test_titles)
+logger.info(f"Overlap between training and test data: {len(overlap)} articles")
 print(f"overlap between training and test data: {len(overlap)} articles")
 assert len(overlap) == 0, "overlap detected between training and test data!"
 
@@ -79,6 +104,10 @@ print("training data sentiment distribution:")
 print(train_data['sentiment'].value_counts())
 print("\ntest data sentiment distribution:")
 print(test_data['sentiment'].value_counts())
+logger.info("Training data sentiment distribution:")
+logger.info(train_data['sentiment'].value_counts())
+logger.info("\nTest data sentiment distribution:")
+logger.info(test_data['sentiment'].value_counts())
 
 # naive bayes model with cross-validation and smote
 vectorizer = TfidfVectorizer(max_features=10000)
@@ -112,6 +141,8 @@ for train_index, val_index in skf.split(X_train_sm, y_train_sm):
 cv_df = pd.DataFrame(cv_results)
 print("naive bayes model cross-validation results:")
 print(cv_df.mean())
+logger.info("Naive Bayes model cross-validation results:")
+logger.info(cv_df.mean())
 
 # final training and evaluation on the test set
 nb_model.fit(X_train_sm, y_train_sm)
@@ -129,6 +160,12 @@ print("accuracy:", nb_accuracy)
 print("precision:", nb_precision)
 print("recall:", nb_recall)
 print("f1 score:", nb_f1)
+logger.info("Naive Bayes model evaluation on test data:")
+logger.info(classification_report(test_data['sentiment'], nb_predictions))
+logger.info(f"Accuracy: {nb_accuracy}")
+logger.info(f"Precision: {nb_precision}")
+logger.info(f"Recall: {nb_recall}")
+logger.info(f"F1 score: {nb_f1}")
 
 # bert model
 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
@@ -176,6 +213,7 @@ trainer = Trainer(
 
 trainer.train()
 
+logger.info("BERT model evaluation:")
 print("bert model evaluation:")
 bert_eval_result = trainer.evaluate()
 
@@ -194,6 +232,8 @@ print("accuracy:", bert_accuracy)
 print("precision:", bert_precision)
 print("recall:", bert_recall)
 print("f1 score:", bert_f1)
+logger.info("BERT model evaluation on test data:")
+logger.info(classification_report(test_data['sentiment'], bert_preds))
 
 # visualization
 metrics = ['accuracy', 'precision', 'recall', 'f1 score']

@@ -11,12 +11,12 @@ import logging
 
 # Initialize logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
-handlers=[logging.FileHandler("sentiment_analysis.txt"), logging.StreamHandler()])
+handlers=[logging.FileHandler("sentiment_analysis.txt"), logging.StreamHandler()]
 logger = logging.getLogger()
 
 
 # load the datasets
-all_news_sentiments = pd.read_csv('all_news_sentiments_v2.csv')
+all_news_sentiments = pd.read_csv('all_news_sentiments_v3.csv')
 all_historical_prices = pd.read_csv('all_historical_prices.csv')
 
 # convert dates to datetime and remove timezone if present
@@ -86,7 +86,7 @@ def plot_sentiment_vs_price(data, ticker):
     plt.show()
 
 # example usage for a specific ticker symbol
-plot_sentiment_vs_price(merged_data, 'AAPL')
+#plot_sentiment_vs_price(merged_data, 'AAPL')
 
 # split the data into training and test sets
 train_data, test_data = train_test_split(all_news_sentiments, test_size=0.2, random_state=42, stratify=all_news_sentiments['sentiment'])

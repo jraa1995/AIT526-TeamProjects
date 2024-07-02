@@ -17,3 +17,6 @@ Benjamin Stewart
 ## Data Sources
 - Financial News API: https://financialmodelingprep.com/developer/docs/
 
+## Additional Note
+- data-extractor_fmpapi.ipynb was the code used to extract data from the Financial News API. It is not usable with my api key.
+- priceVsentimentplot.R was the script used to generate the price vs sentiment plot. Used with R separately and independently from the main system. 

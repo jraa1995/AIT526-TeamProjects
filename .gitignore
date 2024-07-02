@@ -1,8 +1,9 @@
+.DS_Store
+scriptoutput/
 venv/
 __MACOSX/
 *.pyc
 pycache/
-.DS_Store
 tweet/
 tweet.zip
 output_log.txt

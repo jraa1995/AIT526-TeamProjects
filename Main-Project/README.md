@@ -8,3 +8,12 @@ Justin Aguila
 Marcos Portillo
 Allison Rohrer
 Benjamin Stewart
+
+## Running the Code
+1. pip install -r requirements.txt
+2. python main.py
+3. python test_data.py
+
+## Data Sources
+- Financial News API: https://financialmodelingprep.com/developer/docs/
+

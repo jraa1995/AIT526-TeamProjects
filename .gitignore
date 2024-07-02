@@ -1,2 +1,10 @@
 .DS_Store
 scriptoutput/
+venv/
+__MACOSX/
+*.pyc
+pycache/
+tweet/
+tweet.zip
+output_log.txt
+predictions.csv

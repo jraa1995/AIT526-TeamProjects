@@ -1,1 +1,10 @@
 # Team 5 - Main Project
+
+## Project Overview
+This project aims to analyze the sentiment of stock-related news articles and their impact on stock prices using Natural Language Processing (NLP) techniques. By leveraging advanced NLP algorithms, we will extract sentiment information from news articles and analyze its correlation with stock price movements. This analysis will provide valuable insights to investors, helping them make informed decisions based on market sentiment. Our goal is to develop a robust and accurate sentiment analysis model that can be integrated into existing trading platforms, empowering investors with real-time sentiment data for better investment strategies.
+
+## Team Members
+Justin Aguila
+Marcos Portillo
+Allison Rohrer
+Benjamin Stewart
